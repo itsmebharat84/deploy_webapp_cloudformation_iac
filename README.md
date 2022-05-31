@@ -35,6 +35,7 @@ To create the infrastructure stack run the following commands in the same order 
 # Validate deployment
 In order to validate web application is running, navigate to server stack in cloud formation. Under the Outputs section you will fine the DNS name or Public accesible URL (WebAppLBDNSName).
 
+![](screenshots/App Running Screenshot.png)
 # Update infrastructure
 To update the already existing infrastructure stack run one (or all) the following commands:
 
