@@ -10,10 +10,14 @@ Ensure IAC to be fully automated so that infrstructure can be discarded post val
 The below network design depicts all the required infrastructure and their connectivity with each component. 
 Application will be hosted inside the EC2 instance that is managed through ASG Launch Configuration. 
 
+
+![img.png](img.png)
+
 # Pre-requisites 
-1. AWS Account 
-2. Key, incase you need Bastion Host 
-3. S3 Bucket that host the application code e.g. HTML
+1. AWS Account
+2. Create S3 Bucket, to host the application code e.g. HTML
+3. Copy index.html file inside the s3 bucket. 
+4. Key-Pair, to connect to Ec2 instances through Bastion Host  (OPTIONAL)
 
 # Deployment Process 
 The application infrastructure consists of deploying following stacks:
