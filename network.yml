@@ -251,3 +251,7 @@ Outputs:
     Export:
       Name: !Sub ${EnvironmentName}-NatGW2
 
+  InternetGateway:
+    Description: Internet Gateway
+    Value: !Ref InternetGateway
+

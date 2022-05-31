@@ -111,6 +111,7 @@ Resources:
           cd /var/www/html
           aws s3 cp s3://udacityproject-udagram-webapp/index.html /var/www/html/index.html
       ImageId: !Sub "${MachineImageID}"
+      KeyName: UdacityProject_key
       IamInstanceProfile: !Ref WebAppEc2InstanceProfile
       SecurityGroups:
         - !Ref WebServerSecGroup
@@ -187,6 +188,86 @@ Resources:
         ListenerArn: !Ref 'Listener'
         Priority: 1
 
+  BastionInstance1:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref MachineImageID
+      InstanceType: !Ref EC2InstanceType
+      KeyName: UdacityProject_key
+      SubnetId:
+        Fn::ImportValue:
+            !Sub ${EnvironmentName}-PUB1-SN
+      SecurityGroupIds:
+        - !Ref BastionSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-BastionInstance'
+
+  BastionInstance2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref MachineImageID
+      InstanceType: !Ref EC2InstanceType
+      KeyName: UdacityProject_key
+      SubnetId:
+        Fn::ImportValue:
+          !Sub ${EnvironmentName}-PUB2-SN
+      SecurityGroupIds:
+        - !Ref BastionSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-BastionInstance'
+
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription:
+        !Sub 'Security group for ${AWS::StackName} bastion host'
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${EnvironmentName}-VPCID"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 192.168.1.8/32
+
+  BastionAllowInboundSSHFromInternet:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref BastionSecurityGroup
+      IpProtocol: tcp
+      FromPort: 22
+      ToPort: 22
+      CidrIp: 0.0.0.0/0
+
+  BastionAllowOutboundSSHToApplication:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId: !Ref BastionSecurityGroup
+      IpProtocol: tcp
+      FromPort: 22
+      ToPort: 22
+      DestinationSecurityGroupId: !Ref WebServerSecGroup
+
+
+  ApplicationAllowInboundSSHFromBastion:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref WebServerSecGroup
+      IpProtocol: tcp
+      FromPort: 22
+      ToPort: 22
+      SourceSecurityGroupId: !Ref BastionSecurityGroup
+
+  ApplicationAllowInboundSSHFromBastion:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref WebServerSecGroup
+      IpProtocol: tcp
+      FromPort: 22
+      ToPort: 22
+      SourceSecurityGroupId: !Ref BastionSecurityGroup
 
 Outputs:
 
