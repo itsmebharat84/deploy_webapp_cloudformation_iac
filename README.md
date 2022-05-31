@@ -1,5 +1,5 @@
-# Udacity Project - Udagram
-##Deploy a High-Availability Web App using CloudFormation
+# Overview
+Deploy a High-Availability Web App using CloudFormation. 
 
 # Problem Statement
 Provision infrastructure in AWS using cloudformation to deploy Web Application named Udagram. 
@@ -25,8 +25,8 @@ The application infrastructure consists of deploying following stacks:
 # Create Infrastructure 
 To create the infrastructure stack run the following commands in the same order as below:
 
-1. ./create-stack.sh network network.yaml network-parameters.json ## To create Basic Network infrastructure. 
-2. ./create-stack.sh appserver server.yml server-parameters.json  ## To create application server hosting webapp
+      ./create-stack.sh network network.yaml network-parameters.json
+      ./create-stack.sh appserver server.yml server-parameters.json  
 
 # Validate deployment
 In order to validate web application is running, navigate to server stack in cloud formation. Under the Outputs section you will fine the DNS name or Public accesible URL (WebAppLBDNSName).
@@ -34,21 +34,20 @@ In order to validate web application is running, navigate to server stack in clo
 # Update infrastructure
 To update the already existing infrastructure stack run one (or all) the following commands:
 
-1. ./update-stack.sh network network.yaml network-parameters.json ## To create Basic Network infrastructure. 
-2. ./update-stack.sh appserver server.yml server-parameters.json  ## To create application server hosting webapp
+      ./update-stack.sh network network.yaml network-parameters.json 
+      ./update-stack.sh appserver server.yml server-parameters.json  
 
 # (Optional) Bastion Host Along with Application Server 
    In addition to the server stack, I have added code for bastion host. So this will build a bastion host along with server stack resources. The purpose of this bastion host is to connect to instances hosted in private subnet.
    Please note, you need to execute only one script either sever script or server plus bastion script.
-   ## Create Stack 
-    ./create-stack.sh appserver appserver_plus_bastion.yml appserver_plus_bastion.json ## To create application server and a bastion host
-   ## Update Stack
-    ./update-stack.sh appserver appserver_plus_bastion.yml appserver_plus_bastion.json ## To create application server and a bastion host
+   ### Create Stack 
+    ./create-stack.sh appserver appserver_plus_bastion.yml appserver_plus_bastion.json 
+   ### Update Stack
+    ./update-stack.sh appserver appserver_plus_bastion.yml appserver_plus_bastion.json 
 
 
 # Destroy infrastructure
 To delete the infrastructure stack run the following commands in the same order as below:
 
-./delete-stack.sh appserver 
-
-./delete-stack.sh network
+      ./delete-stack.sh appserver
+      ./delete-stack.sh network
